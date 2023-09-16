@@ -1,5 +1,6 @@
 from django.db import models
 from .base_model import BaseModel
+from .course import Course
 
 class Learner(BaseModel):
     """ Learner user definition"""
@@ -9,3 +10,4 @@ class Learner(BaseModel):
     phone_number = models.CharField(max_length=200)
     password = models.CharField(max_length=200)
     is_active = models.BooleanField()
+    courses = models.ManyToManyField(Course)
