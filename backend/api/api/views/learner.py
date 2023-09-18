@@ -3,6 +3,7 @@
 from django.http import JsonResponse
 from rest_framework import status
 from django.core.paginator import Paginator
+from django.contrib.auth.hashers import check_password
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -96,3 +97,31 @@ def learner_details(request, id):
             "message": "User deleted successfully"
         }
         return Response(response_data, status=status.HTTP_204_NO_CONTENT)
+    
+# login 
+@api_view(['POST'])
+def learner_login(request):
+    '''This view handles learner login'''
+    email = request.data.get('email', None)
+    password = request.data.get('password', None)
+    user = None
+    if not password or not email:
+        return Response({
+            "message": "email and password are required to login"
+        }, status=status.HTTP_400_BAD_REQUEST)
+    try:
+        user = Learner.objects.get(email__iexact=email.lower())
+    except Learner.DoesNotExist:
+        pass
+    if user and check_password(password, user.password) and user.is_active:
+        return Response({
+            "message": "Login successful",
+            "user": user.id
+        }, status=status.HTTP_200_OK)
+    if user and user.password and not user.is_active:
+        return Response({
+            "message": "account deactivated"
+        }, status=status.HTTP_401_UNAUTHORIZED)
+    return Response({
+        "message": "Wrong credentials"
+    }, status=status.HTTP_401_UNAUTHORIZED)
