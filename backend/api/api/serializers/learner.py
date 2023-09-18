@@ -13,3 +13,15 @@ class LearnerSerializer(serializers.ModelSerializer):
         password = make_password(validated_data['password'])
         validated_data['password'] = password
         return Learner.objects.create(**validated_data)
+    
+class LearnerUpdateSerializer(LearnerSerializer):
+    """Serializer for updating an existing Learner"""
+    class Meta:
+        model = Learner
+        fields = '__all__'
+
+    def __init__(self, *args, **kwargs):
+        super(LearnerUpdateSerializer, self).__init__(*args, **kwargs)
+        # Make fields optional when updating
+        for field_name, field in self.fields.items():
+            field.required = False

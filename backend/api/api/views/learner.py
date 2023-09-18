@@ -8,7 +8,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
 from ..models.learner import Learner
-from ..serializers.learner import LearnerSerializer
+from ..serializers.learner import LearnerSerializer, LearnerUpdateSerializer
 
 @api_view(['POST', 'GET'])
 def create_learner(request):
@@ -80,10 +80,14 @@ def learner_details(request, id):
         return Response(serializer.data)
     
     elif request.method == 'PUT':
-        serializer = LearnerSerializer(learner, data = request.data)
+        serializer = LearnerUpdateSerializer(learner, data = request.data)
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data)
+            response_data = {
+                "message": "Details updated successfully",
+                "data": serializer.data
+            }
+            return Response(response_data, status=status.HTTP_202_ACCEPTED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
  
     elif request.method == 'DELETE':
