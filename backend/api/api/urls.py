@@ -17,7 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from .views.admin import admin_list, admin_detail, admin_login
-from .views.learner import create_learner, learner_details
+from .views.learner import create_learner, learner_details, learner_login
 
 urlpatterns = [
     path('admin/', admin.site.urls),
