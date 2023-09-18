@@ -52,6 +52,7 @@ def create_learner(request):
         
         paginator = Paginator(queryset, request.query_params.get('page_size', 10)) # Default page size is 10
         page = paginator.get_page(request.query_params.get('page', 1)) # Default page is 1
+        
 
         serializer = LearnerSerializer(page, many=True)
         return Response({
