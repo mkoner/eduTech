@@ -46,7 +46,6 @@ def admin_list(request):
         email = request.query_params.get('email')
         phone_number = request.query_params.get('phoneNumber')
         is_active = request.query_params.get('isActive')
-        print(first_name)
 
         if first_name is not None:
             admins = admins.filter(first_name__icontains=first_name)
