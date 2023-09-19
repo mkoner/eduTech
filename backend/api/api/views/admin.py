@@ -40,6 +40,7 @@ def admin_list(request):
 
     if request.method == 'GET':
         admins = Admin.objects.all()
+        print(request)
 
         first_name = request.query_params.get('firstName')
         last_name = request.query_params.get('lastName')

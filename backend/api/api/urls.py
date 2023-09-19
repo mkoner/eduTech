@@ -18,6 +18,7 @@ from django.contrib import admin
 from django.urls import path
 from .views.admin import admin_list, admin_detail, admin_login
 from .views.learner import create_learner, learner_details, learner_login
+from .views.courses import course_list, course_detail, course_material_list
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -26,5 +27,9 @@ urlpatterns = [
     path('admins/login', admin_login),
     path('learners/', create_learner),
     path('learners/<int:id>', learner_details),
-    path('learners/login', learner_login)
+    path('learners/login', learner_login),
+    path('courses', course_list),
+    path('courses/<int:id>/materials', course_material_list),
+    path('courses/<int:id>', course_detail),
+    
 ]
