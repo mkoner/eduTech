@@ -33,6 +33,7 @@ def create_course_material(request):
             title = request.query_params.get('title', None)
             author = request.query_params.get('author', None)
             source = request.query_params.get('source', None)
+            id = request.query_params.get('id', None)
 
             if title:
                 queryset = queryset.filter(title__icontains=title)
@@ -42,6 +43,9 @@ def create_course_material(request):
 
             if source:
                 queryset = queryset.filter(source__icontains=source)
+            
+            if id:
+                queryset = queryset.filter(id__icontains=id)
 
             if not queryset:
                 return Response({

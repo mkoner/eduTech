@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
+from os import getenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -76,10 +77,19 @@ WSGI_APPLICATION = 'api.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
+MYSL_DB_NAME = getenv('MYSL_DB_NAME', 'edutech')
+MYSQL_DB_USER = getenv('MYSQL_DB_USER', 'edutech_user')
+MYSQL_DB_PASSWORD = getenv('MYSQL_DB_PASSWORD', '@edutech_001')
+MYSQL_DB_HOST = getenv('MYSQL_DB_HOST', 'localhost')
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql', 
+        'NAME': MYSL_DB_NAME,
+        'USER': MYSQL_DB_USER,
+        'PASSWORD': MYSQL_DB_PASSWORD,
+        'HOST': MYSQL_DB_HOST,   
+        'PORT': '3306',
     }
 }
 
