@@ -3,7 +3,7 @@
 from django.http import JsonResponse
 from rest_framework import status
 from django.core.paginator import Paginator
-from django.contrib.auth.hashers import check_password
+from django.contrib.auth.hashers import check_password, make_password
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -88,6 +88,9 @@ def learner_details(request, id):
         return Response(serializer.data)
     
     elif request.method == 'PUT':
+        password = request.data.get('password')
+        if password is not None:
+            request.data['password'] = make_password(password)
         serializer = LearnerUpdateSerializer(learner, data = request.data)
         if serializer.is_valid():
             serializer.save()

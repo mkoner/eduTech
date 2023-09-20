@@ -25,3 +25,4 @@ class LearnerUpdateSerializer(LearnerSerializer):
         # Make fields optional when updating
         for field_name, field in self.fields.items():
             field.required = False
+    

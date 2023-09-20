@@ -7,8 +7,8 @@ from django.core.paginator import Paginator
 
 from ..models.course import Course
 from ..models.course_material import CourseMaterial
-from ..serializers.course import CourseSerializer
-from ..serializers.course_material import CourseMaterialSerializer
+from ..serializers.course import CourseSerializer, CourseUpdateSerializer
+from ..serializers.course_material import CourseMaterialSerializer, CourseMaterialUpdateSerializer
 
 
 @api_view(['GET', 'POST'])
@@ -75,7 +75,7 @@ def course_detail(request, id):
         return Response(response)
     
     elif request.method == 'PUT':
-        serializer = CourseSerializer(course, data = request.data)
+        serializer = CourseUpdateSerializer(course, data = request.data)
         if serializer.is_valid():
             serializer.save()
             response_data = {
@@ -176,7 +176,7 @@ def course_material_detail(request, cid, cmid):
         return Response(response)
     
     elif request.method == 'PUT':
-        serializer = CourseMaterialSerializer(course_material, data = request.data)
+        serializer = CourseMaterialUpdateSerializer(course_material, data = request.data)
         if serializer.is_valid():
             serializer.save()
             response = {

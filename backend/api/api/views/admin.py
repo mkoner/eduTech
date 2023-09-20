@@ -4,9 +4,10 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
 from django.core.paginator import Paginator
+from django.contrib.auth.hashers import check_password, make_password
 
 from ..models.admin import Admin
-from ..serializers.admin import AdminSerializer
+from ..serializers.admin import AdminSerializer, AdminUpdateSerializer
 
 @api_view(['POST'])
 def admin_login(request):
@@ -22,12 +23,12 @@ def admin_login(request):
         user = Admin.objects.get(email=email)
     except Admin.DoesNotExist:
         pass
-    if user and user.password == password and user.is_active:
+    if user and check_password(password, user.password) and user.is_active:
         return Response({
             'message': 'Successfull login',
             'user': user.id,
         })
-    if user and user.password == password and not user.is_active:
+    if user and check_password(password, user.password) and not user.is_active:
         return Response({
             'Message': 'account desactivated',
         }, status=status.HTTP_401_UNAUTHORIZED)
@@ -106,7 +107,10 @@ def admin_detail(request, id):
         return Response(serializer.data)
     
     elif request.method == 'PUT':
-        serializer = AdminSerializer(admin, data = request.data)
+        password = request.data.get('password')
+        if password is not None:
+            request.data['password'] = make_password(password)
+        serializer = AdminUpdateSerializer(admin, data = request.data)
         if serializer.is_valid():
             serializer.save()
             response_data = {

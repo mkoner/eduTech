@@ -7,3 +7,15 @@ class CourseSerializer(serializers.ModelSerializer):
     class Meta:
         model = Course
         fields = '__all__'
+
+class CourseUpdateSerializer(CourseSerializer):
+    """Serializer for updating an existing Learner"""
+    class Meta:
+        model = Course
+        fields = '__all__'
+
+    def __init__(self, *args, **kwargs):
+        super(CourseUpdateSerializer, self).__init__(*args, **kwargs)
+        # Make fields optional when updating
+        for field_name, field in self.fields.items():
+            field.required = False
