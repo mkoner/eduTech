@@ -17,18 +17,20 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from .views.admin import admin_list, admin_detail, admin_login
-from .views.learner import create_learner, learner_details, learner_login
-from .views.courses import course_list, course_detail, course_material_list
+from .views.learner import create_learner, learner_details, learner_login, register_for_course
+from .views.courses import course_list, course_detail, course_material_list, course_material_detail
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('admins', admin_list),
     path('admins/<int:id>', admin_detail),
     path('admins/login', admin_login),
-    path('learners/', create_learner),
+    path('learners', create_learner),
+    path('learners/<int:lid>/register/<int:cid>', register_for_course),
     path('learners/<int:id>', learner_details),
     path('learners/login', learner_login),
     path('courses', course_list),
+    path('courses/<int:cid>/materials/<int:cmid>', course_material_detail),
     path('courses/<int:id>/materials', course_material_list),
     path('courses/<int:id>', course_detail),
     

@@ -1,6 +1,5 @@
 """ All the views related to admin"""
 
-from django.http import JsonResponse
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
@@ -47,6 +46,7 @@ def admin_list(request):
         email = request.query_params.get('email')
         phone_number = request.query_params.get('phoneNumber')
         is_active = request.query_params.get('isActive')
+        admin_id = request.query_params.get('id')
 
         if first_name is not None:
             admins = admins.filter(first_name__icontains=first_name)
@@ -63,11 +63,15 @@ def admin_list(request):
         if is_active is not None:
             admins = admins.filter(is_active=is_active)
 
+        if admin_id is not None:
+            admins = admins.filter(id=admin_id)
+
         paginator = Paginator(admins, request.query_params.get('page_size', 10)) # Default page size is 10
         page = paginator.get_page(request.query_params.get('page', 1)) # Default page is 1
 
         serializer = AdminSerializer(page, many=True)
         return Response({
+            'message': 'admins fetched successfully',
             'count': paginator.count,
             'page_size': paginator.per_page,
             'page': page.number,
@@ -78,7 +82,12 @@ def admin_list(request):
         serializer = AdminSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+            response = {
+                'message': 'Admin created',
+                'data': serializer.data,
+            }
+            return Response(response, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         
 @api_view(['GET', 'PUT', 'DELETE'])
 def admin_detail(request, id):

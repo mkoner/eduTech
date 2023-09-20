@@ -9,6 +9,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
 from ..models.learner import Learner
+from ..models.course import Course
 from ..serializers.learner import LearnerSerializer, LearnerUpdateSerializer
 
 @api_view(['POST', 'GET'])
@@ -23,7 +24,11 @@ def create_learner(request):
                 "data": serializer.data
             }
             return Response(response_data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        response = {
+            'message':'Something went wrong',
+            'error': serializer.errors
+        }
+        return Response(response, status=status.HTTP_400_BAD_REQUEST)
     
     if request.method == 'GET':
         queryset = Learner.objects.all()
@@ -56,6 +61,7 @@ def create_learner(request):
 
         serializer = LearnerSerializer(page, many=True)
         return Response({
+            'meassage': 'Learners fetched',
             'count': paginator.count,
             'page_size': paginator.per_page,
             'page': page.number,
@@ -90,7 +96,11 @@ def learner_details(request, id):
                 "data": serializer.data
             }
             return Response(response_data, status=status.HTTP_202_ACCEPTED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        response = {
+            'message':'Something went wrong',
+            'error': serializer.errors
+        }
+        return Response(response, status=status.HTTP_400_BAD_REQUEST)
  
     elif request.method == 'DELETE':
         learner.delete()
@@ -126,3 +136,30 @@ def learner_login(request):
     return Response({
         "message": "Wrong credentials"
     }, status=status.HTTP_401_UNAUTHORIZED)
+
+@api_view(['GET'])
+def register_for_course(request, lid, cid):
+    """Register learner to a course"""
+
+    try:
+        learner = Learner.objects.get(pk=lid)
+    except Learner.DoesNotExist:
+        response_data = {
+            "Message": "User not found"
+        }
+        return Response(response_data, status=status.HTTP_404_NOT_FOUND)
+    
+    try:
+        course = Course.objects.get(pk=cid)
+    except Course.DoesNotExist:
+        response_data = {
+            "Message": "Course not found"
+        }
+        return Response(response_data, status=status.HTTP_404_NOT_FOUND)
+    
+    learner.courses.add(course)
+
+    response = {
+        'message': 'Register successfully'
+    }
+    return Response(response)
