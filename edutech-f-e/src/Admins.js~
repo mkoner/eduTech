@@ -1,0 +1,29 @@
+import React, { useEffect, useState } from 'react';
+import { getAdmins } from './api';
+
+function Admins() {
+    const [admins, setAdmins] = useState([]);
+
+    useEffect(() => {
+	const fetchAdmins = async () => {
+	    const data = await getAdmins();
+	    setAdmins(data);
+	};
+
+	fetchAdmins();
+    }, []);
+
+    return (
+	<div>
+	    <h1>Admins</h1>
+	    {admins.map((admin) => (
+		<div key={admin.id}>
+		    <h2>{admin.firstName} {admin.lastName}</h2>
+		    <p>{admin.email}</p>
+		</div>
+	    ))}
+	</div>
+	    );
+}
+
+export default Admins;

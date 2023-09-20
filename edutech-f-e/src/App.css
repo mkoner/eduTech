@@ -1,0 +1,102 @@
+/* App.css */
+
+body {
+    font-family: Arial, sans-serif;
+    padding-top: 0; /* Adjust based on the height of your header */
+    padding-bottom: 0; /* Adjust based on the height of your footer */
+    background-color: #f5f5f5; /* This is a light gray color, replace with the color you want */
+}
+
+.navbar {
+    margin-bottom: 20px;
+}
+
+.nav-item {
+    margin-right: 10px;
+}
+
+input[type="text"], input[type="password"] {
+    display: block;
+    margin-bottom: 10px;
+    padding: 10px;
+    font-size: 16px;
+    width: 100%;
+    max-width: 300px;
+}
+
+button {
+    padding: 10px 20px;
+    font-size: 16px;
+}
+
+h1, h2 {
+    color: #333;
+}
+
+h1 {
+    font-size: 24px;
+}
+
+h2 {
+    font-size: 20px;
+}
+
+/* LoginPage.css */
+.LoginPage input[type="text"], .LoginPage input[type="password"] {
+    margin-bottom: 20px;
+}
+
+/* RegistrationPage.css */
+.RegistrationPage input[type="text"], .RegistrationPage input[type="password"] {
+    margin-bottom: 20px;
+}
+
+/* MyCourses.css */
+.MyCourses h2 {
+    color: #666;
+}
+
+/* Courses.css */
+.Courses h2 {
+    color: #666;
+}
+
+/* Header.css */
+.Header {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background-color: #f8f9fa; /* This is a light gray color, replace with the color you want */
+    padding: 20px 0;
+    z-index: 1000;
+}
+
+.Header h1 {
+    margin: 0;
+    font-size: 24px;
+    text-align: center;
+}
+
+/* Footer.css */
+.Footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+
+
+.Footer p {
+    margin: 0;
+    font-size: 14px;
+    text-align: center;
+}
+
+/* Admin.css */
+.Admin {
+    /* Add your styles for the Admin component here */
+}
+
+/* CourseMaterials.css */
+.CourseMaterials {
+    /* Add your styles for the CourseMaterials component here */
+}

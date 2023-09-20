@@ -1,0 +1,77 @@
+import React, { useState, useEffect } from 'react';
+import { Route, Link, Routes } from 'react-router-dom';
+import axios from 'axios';
+import LoginPage from './LoginPage';
+import RegistrationPage from './RegistrationPage';
+import MyCourses from './MyCourses';
+import Courses from './Courses';
+import './Learners.css';
+
+const LearnersList = () => {
+    const [learners, setLearners] = useState([]);
+    const [learnerName, setLearnerName] = useState('');
+    const [learnerEmail, setLearnerEmail] = useState('');
+
+    useEffect(() => {
+	getLearners();
+    }, []);
+
+    const getLearners = async () => {
+	try {
+	    const response = await axios.get('http://localhost:8080/learners');
+	    setLearners(response.data);
+	} catch (error) {
+	    console.error(`Error fetching learners: ${error}`);
+	}
+    };
+
+    const addLearner = async () => {
+	try {
+	    const response = await axios.post('http://localhost:8080/learners', { name: learnerName, email: learnerEmail });
+	    setLearners([...learners, response.data]);
+	} catch (error) {
+	    console.error(`Error adding learner: ${error}`);
+	}
+    };
+
+    return (
+	<div>
+	    <h1>Learner List</h1>
+	    {learners.map((learner) => (
+		<div key={learner.id}>
+		    <h2>{learner.name}</h2>
+		    <p>{learner.email}</p>
+		</div>
+	    ))}
+	    <input type="text" value={learnerName} onChange={(e) => setLearnerName(e.target.value)} placeholder="Learner Name" />
+	    <input type="text" value={learnerEmail} onChange={(e) => setLearnerEmail(e.target.value)} placeholder="Learner Email" />
+	    <button onClick={addLearner}>Add Learner</button>
+	</div>
+	    );
+};
+
+const Learners = () => {
+    return (
+	<div>
+	    <nav>
+		<ul>
+		    <li><Link to="login">Login</Link></li>
+		    <li><Link to="register">Register</Link></li>
+		    <li><Link to="mycourses">My Courses</Link></li>
+		    <li><Link to="courses">Courses</Link></li>
+		    <li><Link to="/">Home</Link></li>
+		</ul>
+	    </nav>
+
+	    <Routes>
+		<Route path="/" element={<LearnersList />} />
+		<Route path="login" element={<LoginPage />} />
+		<Route path="register" element={<RegistrationPage />} />
+		<Route path="mycourses" element={<MyCourses />} />
+		<Route path="courses" element={<Courses />} />
+	    </Routes>
+	</div>
+	    );
+};
+
+export default Learners;

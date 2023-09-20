@@ -1,0 +1,22 @@
+import React from 'react';
+
+function CourseMaterials() {
+    const materials = [
+	{ id: 1, title: 'Material 1', author: 'Author 1' },
+	// Add more materials as needed
+    ];
+
+    return (
+	<div>
+	    <h1>Course Materials</h1>
+	    {materials.map((material) => (
+		<div key={material.id}>
+		    <h2>{material.title}</h2>
+		    <p>{material.author}</p>
+		</div>
+	    ))}
+	</div>
+	    );
+}
+
+export default CourseMaterials;
