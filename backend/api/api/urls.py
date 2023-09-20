@@ -19,6 +19,7 @@ from django.urls import path
 from .views.admin import admin_list, admin_detail, admin_login
 from .views.learner import create_learner, learner_details, learner_login, register_for_course
 from .views.courses import course_list, course_detail, course_material_list, course_material_detail
+from .views.course_materials import create_course_material, get_course_material
 
 urlpatterns = [
     path('admin/', admin.site.urls),
