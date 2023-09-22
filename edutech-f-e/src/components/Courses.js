@@ -1,26 +1,23 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import './Courses.css';
 
-const Courses = () => {
+const Courses = ({ user = { role: 'learner' } }) => {
     const [courses, setCourses] = useState([]);
     const [courseName, setCourseName] = useState('');
     const [description, setDescription] = useState('');
     const [selectedCourse, setSelectedCourse] = useState(null);
 
-    useEffect(() => {
-	fetchCourses();
-    }, []);
+    // Mock data
+    const mockCourses = [
+	{ id: 1, course_name: 'Course 1', description: 'This is course 1' },
+	{ id: 2, course_name: 'Course 2', description: 'This is course 2' },
+	// Add more courses as needed
+    ];
 
-    const fetchCourses = () => {
-	axios.get('/api/courses')
-	    .then(response => {
-		setCourses(response.data.data);
-	    })
-	    .catch(error => {
-		console.error('There was an error!', error);
-	    });
-    };
+    useEffect(() => {
+	// Use mock data instead of fetching from API
+	setCourses(mockCourses);
+    }, []);
 
     const handleSubmit = (event) => {
 	event.preventDefault();
@@ -31,22 +28,17 @@ const Courses = () => {
 	};
 
 	if (selectedCourse) {
-	    axios.put(`/api/courses/${selectedCourse.id}`, course)
-	        .then(response => {
-		    fetchCourses();
-		})
-	        .catch(error => {
-		    console.error('There was an error!', error);
-		});
+	    console.log(`Updating course ${selectedCourse.id}`);
+	    // Replace this with your actual API call
 	} else {
-	    axios.post('/api/courses', course)
-	        .then(response => {
-		    fetchCourses();
-		})
-	        .catch(error => {
-		    console.error('There was an error!', error);
-		});
+	    console.log('Creating new course');
+	    // Replace this with your actual API call
 	}
+
+	// Clear form
+	setCourseName('');
+	setDescription('');
+	setSelectedCourse(null);
     };
 
     const handleUpdate = (course) => {
@@ -56,42 +48,43 @@ const Courses = () => {
     };
 
     const handleDelete = (id) => {
-	axios.delete(`/api/courses/${id}`)
-	    .then(response => {
-		fetchCourses();
-	    })
-	    .catch(error => {
-		console.error('There was an error!', error);
-	    });
+	console.log(`Deleting course ${id}`);
+	// Replace this with your actual API call
     };
 
     return (
 	<div>
-	    <form onSubmit={handleSubmit}>
-		<label>
-		    Course Name:
-		    <input
-		    type="text"
-		    value={courseName}
-		    onChange={e => setCourseName(e.target.value)}
-		    />
-		</label>
-		<label>
-		    Description:
-		    <textarea
-		    value={description}
-		    onChange={e => setDescription(e.target.value)}
-		    />
-		</label>
-		<input type="submit" value={selectedCourse ? 'Update' : 'Submit'} />
-	    </form>
+	    {user && user.role === 'admin' && (
+		<form onSubmit={handleSubmit}>
+		    <label>
+			Course Name:
+			<input
+			    type="text"
+			    value={courseName}
+			    onChange={e => setCourseName(e.target.value)}
+			/>
+		    </label>
+		    <label>
+			Description:
+			<textarea
+			    value={description}
+			    onChange={e => setDescription(e.target.value)}
+			/>
+		    </label>
+		    <input type="submit" value={selectedCourse ? 'Update' : 'Submit'} />
+		</form>
+	    )}
 	    <div>
 		{courses.map((course, index) => (
 		    <div key={index}>
 			<h2>{course.course_name}</h2>
 			<p>{course.description}</p>
-			<button onClick={() => handleUpdate(course)}>Update</button>
-			<button onClick={() => handleDelete(course.id)}>Delete</button>
+			{user && user.role === 'admin' && (
+			    <>
+				<button onClick={() => handleUpdate(course)}>Update</button>
+				<button onClick={() => handleDelete(course.id)}>Delete</button>
+			    </>
+			)}
 		    </div>
 		))}
 	    </div>
