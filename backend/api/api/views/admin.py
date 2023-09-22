@@ -8,6 +8,7 @@ from django.contrib.auth.hashers import check_password, make_password
 
 from ..models.admin import Admin
 from ..serializers.admin import AdminSerializer, AdminUpdateSerializer
+from ..utils.jwt_utils import generate_token, get_user_from_request
 
 @api_view(['POST'])
 def admin_login(request):
@@ -24,9 +25,10 @@ def admin_login(request):
     except Admin.DoesNotExist:
         pass
     if user and check_password(password, user.password) and user.is_active:
+        token = generate_token(user)
         return Response({
             'message': 'Successfull login',
-            'user': user.id,
+            'token': token,
         })
     if user and check_password(password, user.password) and not user.is_active:
         return Response({
@@ -37,11 +39,43 @@ def admin_login(request):
 @api_view(['GET', 'POST'])
 def admin_list(request):
     """Get the list of admins or post an admin"""
+    
+    # commented as of now so we can create our first admins
+    """
+    user = get_user_from_request(request)
+    # if token not passed or not valid
+    if not user:
+        response_data = {
+            "message": "Not authenticated",
+        }
+        return Response(response_data, status=status.HTTP_401_UNAUTHORIZED)
+        
+    # If user not an admin, only admins can get the list of admins or create an admin
+    if not isinstance(user, Admin):
+        response_data = {
+            "message": "Not allowed",
+        }
+        return Response(response_data, status=status.HTTP_403_FORBIDDEN) 
+    """
+
 
     if request.method == 'GET':
+        user = get_user_from_request(request)
+        # if token not passed or not valid
+        if not user:
+            response_data = {
+                "message": "Not authenticated",
+            }
+            return Response(response_data, status=status.HTTP_401_UNAUTHORIZED)
+        # If user not an admin, only admins can get the list of admins or create an admin
+        if not isinstance(user, Admin):
+            response_data = {
+                "message": "Not allowed",
+            }
+            return Response(response_data, status=status.HTTP_403_FORBIDDEN)
+        # The code above is to be removed after uncommenting the lines above 
+        
         admins = Admin.objects.all()
-        print(request)
-
         first_name = request.query_params.get('firstName')
         last_name = request.query_params.get('lastName')
         email = request.query_params.get('email')
@@ -93,6 +127,22 @@ def admin_list(request):
 @api_view(['GET', 'PUT', 'DELETE'])
 def admin_detail(request, id):
     """ Get an admin details, update an admin and delete an admin"""
+
+
+    user = get_user_from_request(request)
+    # if token not passed or not valid
+    if not user:
+        response_data = {
+            "message": "Not authenticated",
+        }
+        return Response(response_data, status=status.HTTP_401_UNAUTHORIZED)
+    
+    # Only an admin cant get, update or delete an admin
+    if isinstance(user, Admin):
+        response_data = {
+            "message": "Not allowed",
+        }
+        return Response(response_data, status=status.HTTP_403_FORBIDDEN)
 
     try:
         admin = Admin.objects.get(pk=id)
