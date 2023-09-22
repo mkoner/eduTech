@@ -5,7 +5,10 @@ from rest_framework.response import Response
 from rest_framework import status
 from django.core.paginator import Paginator
 
+from api.utils.jwt_utils import get_user_from_request
+
 from ..models.course import Course
+from ..models.admin import Admin
 from ..models.course_material import CourseMaterial
 from ..serializers.course import CourseSerializer, CourseUpdateSerializer
 from ..serializers.course_material import CourseMaterialSerializer, CourseMaterialUpdateSerializer
@@ -39,6 +42,21 @@ def course_list(request):
         }, status=status.HTTP_200_OK)
     
     if request.method == 'POST':
+        user = get_user_from_request(request)
+        # if token not passed or not valid
+        if not user:
+            response_data = {
+                "message": "Not authenticated",
+            }
+            return Response(response_data, status=status.HTTP_401_UNAUTHORIZED)
+        
+        # Only admin can create a course
+        if isinstance(user, Admin) and user.id != id:
+            response_data = {
+                "message": "Not allowed",
+            }
+            return Response(response_data, status=status.HTTP_403_FORBIDDEN)
+        
         serializer = CourseSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
@@ -75,6 +93,21 @@ def course_detail(request, id):
         return Response(response)
     
     elif request.method == 'PUT':
+        user = get_user_from_request(request)
+        # if token not passed or not valid
+        if not user:
+            response_data = {
+                "message": "Not authenticated",
+            }
+            return Response(response_data, status=status.HTTP_401_UNAUTHORIZED)
+        
+        # Only admin can update a course
+        if isinstance(user, Admin) and user.id != id:
+            response_data = {
+                "message": "Not allowed",
+            }
+            return Response(response_data, status=status.HTTP_403_FORBIDDEN)
+        
         serializer = CourseUpdateSerializer(course, data = request.data)
         if serializer.is_valid():
             serializer.save()
@@ -90,6 +123,20 @@ def course_detail(request, id):
         return Response(response, status=status.HTTP_400_BAD_REQUEST)
     
     elif request.method == 'DELETE':
+        user = get_user_from_request(request)
+        # if token not passed or not valid
+        if not user:
+            response_data = {
+                "message": "Not authenticated",
+            }
+            return Response(response_data, status=status.HTTP_401_UNAUTHORIZED)
+        
+        # Only admin can delete a course
+        if isinstance(user, Admin) and user.id != id:
+            response_data = {
+                "message": "Not allowed",
+            }
+            return Response(response_data, status=status.HTTP_403_FORBIDDEN)
         course.delete()
         response_data = {
             "message": "Course deleted successfully"
@@ -139,6 +186,21 @@ def course_material_list(request, id):
         }, status=status.HTTP_200_OK)
     
     if request.method == 'POST':
+        user = get_user_from_request(request)
+        # if token not passed or not valid
+        if not user:
+            response_data = {
+                "message": "Not authenticated",
+            }
+            return Response(response_data, status=status.HTTP_401_UNAUTHORIZED)
+        
+        # Only admin can add a course material
+        if isinstance(user, Admin) and user.id != id:
+            response_data = {
+                "message": "Not allowed",
+            }
+            return Response(response_data, status=status.HTTP_403_FORBIDDEN)
+        
         serializer = CourseMaterialSerializer(data=request.data)
         request.data['course'] = id
         if serializer.is_valid():        
@@ -159,6 +221,14 @@ def course_material_list(request, id):
 def course_material_detail(request, cid, cmid):
     """ Get a course_material details, update an course or delete a course_material"""
 
+    user = get_user_from_request(request)
+    # if token not passed or not valid only logged in users can access course materials
+    if not user:
+        response_data = {
+            "message": "Not authenticated",
+        }
+        return Response(response_data, status=status.HTTP_401_UNAUTHORIZED)
+    
     try:
         course_material = CourseMaterial.objects.get(pk=cmid)
     except CourseMaterial.DoesNotExist:
@@ -175,7 +245,14 @@ def course_material_detail(request, cid, cmid):
         }
         return Response(response)
     
-    elif request.method == 'PUT':
+    elif request.method == 'PUT':        
+        # Only admin can update a course material
+        if isinstance(user, Admin) and user.id != id:
+            response_data = {
+                "message": "Not allowed",
+            }
+            return Response(response_data, status=status.HTTP_403_FORBIDDEN)
+        
         serializer = CourseMaterialUpdateSerializer(course_material, data = request.data)
         if serializer.is_valid():
             serializer.save()
@@ -191,6 +268,14 @@ def course_material_detail(request, cid, cmid):
         return Response(response, status=status.HTTP_400_BAD_REQUEST)
     
     elif request.method == 'DELETE':
+
+        # Only admin can delete a course material
+        if isinstance(user, Admin) and user.id != id:
+            response_data = {
+                "message": "Not allowed",
+            }
+            return Response(response_data, status=status.HTTP_403_FORBIDDEN)
+        
         course_material.delete()
         response = {
             "message": "Course material deleted successfully"

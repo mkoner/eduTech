@@ -1,6 +1,5 @@
 """ All the views related to admin"""
 
-from django.http import JsonResponse
 from rest_framework import status
 from django.core.paginator import Paginator
 from django.contrib.auth.hashers import check_password, make_password
@@ -9,12 +8,21 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
 from ..models.learner import Learner
+from ..models.admin import Admin
 from ..models.course import Course
 from ..serializers.learner import LearnerSerializer, LearnerUpdateSerializer
+from ..utils.jwt_utils import generate_token, get_user_from_request, validate_token
 
 @api_view(['POST', 'GET'])
 def create_learner(request):
     """Get the list of learners or create a new learner"""
+
+    user = get_user_from_request(request)
+    if not user:
+        response_data = {
+                "message": "Not authenticated",
+            }
+        return Response(response_data, status=status.HTTP_401_UNAUTHORIZED)
     if request.method == 'POST':
         serializer = LearnerSerializer(data=request.data)
         if serializer.is_valid():
@@ -31,6 +39,22 @@ def create_learner(request):
         return Response(response, status=status.HTTP_400_BAD_REQUEST)
     
     if request.method == 'GET':
+
+        user = get_user_from_request(request)
+        # if token not passed or not valid
+        if not user:
+            response_data = {
+                "message": "Not authenticated",
+            }
+            return Response(response_data, status=status.HTTP_401_UNAUTHORIZED)
+        
+        # If user not an admin, only admins can get the list of learners
+        if not isinstance(user, Admin):
+            response_data = {
+                "message": "Not allowed",
+            }
+            return Response(response_data, status=status.HTTP_403_FORBIDDEN)    
+        
         queryset = Learner.objects.all()
 
         # Filter learners based on query string parameters
@@ -75,6 +99,21 @@ def learner_details(request, id):
     PUT: Update the user info(request body with the info to be updated)
     DELETE: Delete the user
     '''
+    user = get_user_from_request(request)
+    # if token not passed or not valid
+    if not user:
+        response_data = {
+            "message": "Not authenticated",
+        }
+        return Response(response_data, status=status.HTTP_401_UNAUTHORIZED)
+    
+    # A learner can not updateor get another learner's info
+    if isinstance(user, Learner) and user.id != id:
+        response_data = {
+            "message": "Not allowed",
+        }
+        return Response(response_data, status=status.HTTP_403_FORBIDDEN)
+    
     try:
         learner = Learner.objects.get(pk=id)
     except Learner.DoesNotExist:
@@ -106,6 +145,12 @@ def learner_details(request, id):
         return Response(response, status=status.HTTP_400_BAD_REQUEST)
  
     elif request.method == 'DELETE':
+        # If user not an admin, only admins can delete a learner
+        if not isinstance(user, Admin):
+            response_data = {
+                "message": "Not allowed",
+            }
+            return Response(response_data, status=status.HTTP_403_FORBIDDEN) 
         learner.delete()
         response_data = {
             "message": "User deleted successfully"
@@ -128,9 +173,10 @@ def learner_login(request):
     except Learner.DoesNotExist:
         pass
     if user and check_password(password, user.password) and user.is_active:
+        token = generate_token(user)
         return Response({
             "message": "Login successful",
-            "user": user.id
+            "token": token
         }, status=status.HTTP_200_OK)
     if user and user.password and not user.is_active:
         return Response({
