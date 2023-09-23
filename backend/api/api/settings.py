@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 from pathlib import Path
 from os import getenv
 from dotenv import load_dotenv
+import dj_database_url
 
 load_dotenv()
 
@@ -86,7 +87,7 @@ POST_DB_PASSWORD = getenv('POST_DB_PASSWORD', '@edutech_001')
 POST_DB_HOST = getenv('POST_DB_HOST', 'localhost')
 POST_DB_PORT = getenv('POST_DB_PORT', '5432')
 
-DATABASES = {
+'''DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql', 
         'NAME': POST_DB_NAME,
@@ -95,6 +96,9 @@ DATABASES = {
         'HOST': POST_DB_HOST,   
         'PORT': POST_DB_PORT,
     }
+}'''
+DATABASES = {
+    'default': dj_database_url.parse(getenv("EXTERNAL_DATABASE_URL"))
 }
 
 
