@@ -32,7 +32,10 @@ def get_user_from_request(request):
     token = request.headers.get("Authorization")
     if token and token.startswith("Token "):
         token = token.split(' ', 1)[1]
-        payload = jwt.decode(token, secret, algorithm, issuer="eduTech")
+        try:
+            payload = jwt.decode(token, secret, algorithm, issuer="eduTech")
+        except Exception:
+            return None
         user_id = payload.get("user_id")
         user_type = payload.get("user_type")
         user = Admin.objects.get(pk=user_id) if user_type == "admin" else Learner.objects.get(pk=user_id)
