@@ -1,0 +1,21 @@
+# Installing dependencies
+pip install -r requirements.txt => Located in the api directory
+
+# Setting up postgres databases
+The app now uses postgres as database.
+Install postgres in your local machine and run the setup_db.sql script located inside the Scripts directory
+
+# .env file
+Create a .env file and set the following environment variables
+    * POST_DB_NAME=Your postgres database name
+    * POST_DB_USER=Your postgres username
+    * POST_DB_PASSWORD=Your user password
+    * POST_DB_HOST=Your postgres Host
+    * POST_DB_PORT=Postgres port
+If no .env file is created the default user, password, database, host(localhost) and postgres default port(5432) is used
+
+# Starting the app
+The app now uses gunicorn which will be installed during dependencies installation
+gunicorn api.wsgi:application starts up the application
+
+# Note: You must be in the backend/api directory for it to work.

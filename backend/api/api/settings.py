@@ -12,6 +12,9 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 from os import getenv
+from dotenv import load_dotenv
+
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -26,7 +29,7 @@ SECRET_KEY = 'django-insecure-pyb0qgk&&7=&s8q3n!gax=2c^2^mt-03)@@a2_!&+&s9@_^tz_
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['edutech-36t5.onrender.com']
 
 
 # Application definition
@@ -77,19 +80,20 @@ WSGI_APPLICATION = 'api.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-MYSL_DB_NAME = getenv('MYSL_DB_NAME', 'edutech')
-MYSQL_DB_USER = getenv('MYSQL_DB_USER', 'edutech_user')
-MYSQL_DB_PASSWORD = getenv('MYSQL_DB_PASSWORD', '@edutech_001')
-MYSQL_DB_HOST = getenv('MYSQL_DB_HOST', 'localhost')
+POST_DB_NAME = getenv('POST_DB_NAME', 'edutech')
+POST_DB_USER = getenv('POST_DB_USER', 'edutech_user')
+POST_DB_PASSWORD = getenv('POST_DB_PASSWORD', '@edutech_001')
+POST_DB_HOST = getenv('POST_DB_HOST', 'localhost')
+POST_DB_PORT = getenv('POST_DB_PORT', '5432')
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql', 
-        'NAME': MYSL_DB_NAME,
-        'USER': MYSQL_DB_USER,
-        'PASSWORD': MYSQL_DB_PASSWORD,
-        'HOST': MYSQL_DB_HOST,   
-        'PORT': '3306',
+        'ENGINE': 'django.db.backends.postgresql', 
+        'NAME': POST_DB_NAME,
+        'USER': POST_DB_USER,
+        'PASSWORD': POST_DB_PASSWORD,
+        'HOST': POST_DB_HOST,   
+        'PORT': POST_DB_PORT,
     }
 }
 

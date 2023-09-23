@@ -32,7 +32,7 @@ def admin_login(request):
         })
     if user and check_password(password, user.password) and not user.is_active:
         return Response({
-            'Message': 'account desactivated',
+            'Message': 'account deactivated',
         }, status=status.HTTP_401_UNAUTHORIZED)
     return Response({'Message': 'Wrong credentials'}, status=status.HTTP_401_UNAUTHORIZED)
 
