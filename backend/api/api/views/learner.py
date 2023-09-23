@@ -18,11 +18,11 @@ def create_learner(request):
     """Get the list of learners or create a new learner"""
 
     user = get_user_from_request(request)
-    if not user:
+    '''if not user:
         response_data = {
                 "message": "Not authenticated",
             }
-        return Response(response_data, status=status.HTTP_401_UNAUTHORIZED)
+        return Response(response_data, status=status.HTTP_401_UNAUTHORIZED)'''
     if request.method == 'POST':
         serializer = LearnerSerializer(data=request.data)
         if serializer.is_valid():
