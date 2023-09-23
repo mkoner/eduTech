@@ -29,7 +29,7 @@ SECRET_KEY = 'django-insecure-pyb0qgk&&7=&s8q3n!gax=2c^2^mt-03)@@a2_!&+&s9@_^tz_
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['edutech-36t5.onrender.com']
 
 
 # Application definition
