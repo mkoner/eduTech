@@ -17,15 +17,6 @@ from ..utils.jwt_utils import generate_token, get_user_from_request
 def create_learner(request):
     """Get the list of learners or create a new learner"""
 
-<<<<<<< HEAD
-    user = get_user_from_request(request)
-    '''if not user:
-        response_data = {
-                "message": "Not authenticated",
-            }
-        return Response(response_data, status=status.HTTP_401_UNAUTHORIZED)'''
-=======
->>>>>>> 83695262b0b25477666ed15e56d751c50db0cd79
     if request.method == 'POST':
         serializer = LearnerSerializer(data=request.data)
         if serializer.is_valid():
