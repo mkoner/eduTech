@@ -51,7 +51,7 @@ def course_list(request):
             return Response(response_data, status=status.HTTP_401_UNAUTHORIZED)
         
         # Only admin can create a course
-        if isinstance(user, Admin) and user.id != id:
+        if not isinstance(user, Admin):
             response_data = {
                 "message": "Not allowed",
             }
@@ -102,7 +102,7 @@ def course_detail(request, id):
             return Response(response_data, status=status.HTTP_401_UNAUTHORIZED)
         
         # Only admin can update a course
-        if isinstance(user, Admin) and user.id != id:
+        if not isinstance(user, Admin):
             response_data = {
                 "message": "Not allowed",
             }
@@ -132,7 +132,7 @@ def course_detail(request, id):
             return Response(response_data, status=status.HTTP_401_UNAUTHORIZED)
         
         # Only admin can delete a course
-        if isinstance(user, Admin) and user.id != id:
+        if not isinstance(user, Admin):
             response_data = {
                 "message": "Not allowed",
             }
@@ -195,7 +195,7 @@ def course_material_list(request, id):
             return Response(response_data, status=status.HTTP_401_UNAUTHORIZED)
         
         # Only admin can add a course material
-        if isinstance(user, Admin) and user.id != id:
+        if not isinstance(user, Admin):
             response_data = {
                 "message": "Not allowed",
             }
@@ -247,7 +247,7 @@ def course_material_detail(request, cid, cmid):
     
     elif request.method == 'PUT':        
         # Only admin can update a course material
-        if isinstance(user, Admin) and user.id != id:
+        if not isinstance(user, Admin):
             response_data = {
                 "message": "Not allowed",
             }
@@ -270,7 +270,7 @@ def course_material_detail(request, cid, cmid):
     elif request.method == 'DELETE':
 
         # Only admin can delete a course material
-        if isinstance(user, Admin) and user.id != id:
+        if not isinstance(user, Admin):
             response_data = {
                 "message": "Not allowed",
             }

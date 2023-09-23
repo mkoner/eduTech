@@ -11,18 +11,12 @@ from ..models.learner import Learner
 from ..models.admin import Admin
 from ..models.course import Course
 from ..serializers.learner import LearnerSerializer, LearnerUpdateSerializer
-from ..utils.jwt_utils import generate_token, get_user_from_request, validate_token
+from ..utils.jwt_utils import generate_token, get_user_from_request
 
 @api_view(['POST', 'GET'])
 def create_learner(request):
     """Get the list of learners or create a new learner"""
 
-    user = get_user_from_request(request)
-    '''if not user:
-        response_data = {
-                "message": "Not authenticated",
-            }
-        return Response(response_data, status=status.HTTP_401_UNAUTHORIZED)'''
     if request.method == 'POST':
         serializer = LearnerSerializer(data=request.data)
         if serializer.is_valid():

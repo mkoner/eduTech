@@ -138,7 +138,7 @@ def admin_detail(request, id):
         return Response(response_data, status=status.HTTP_401_UNAUTHORIZED)
     
     # Only an admin cant get, update or delete an admin
-    if isinstance(user, Admin):
+    if not isinstance(user, Admin):
         response_data = {
             "message": "Not allowed",
         }
