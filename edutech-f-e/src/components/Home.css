@@ -1,0 +1,25 @@
+/* Home.css */
+
+.home {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+}
+
+.home h1 {
+    font-size: 2em;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+/* Apply different styles for larger screens */
+@media (min-width: 768px) {
+    .home {
+	padding: 40px;
+    }
+
+    .home h1 {
+	font-size: 2.5em;
+    }
+}

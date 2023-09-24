@@ -1,0 +1,69 @@
+/* Admin.css */
+
+.admin-container {
+    font-family: Arial, sans-serif;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.admin-container h1 {
+    color: #333;
+    text-align: center;
+}
+
+.admin-container h2 {
+    color: #666;
+}
+
+.admin-item {
+    background-color: #f9f9f9;
+    border-radius: 5px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.admin-item button {
+    background-color: #4CAF50; /* Green */
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin-top: 10px;
+    cursor: pointer;
+}
+
+.admin-item button:hover {
+    opacity: 0.8;
+}
+
+.admin-form {
+    background-color: #f0f0f0;
+    border-radius: 5px;
+    padding: 20px;
+}
+
+.admin-form label {
+    display: block;
+    margin-bottom: 10px;
+}
+
+.admin-form input[type="text"], .admin-form input[type="email"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+}
+
+.admin-form button[type="submit"] {
+    background-color: #008CBA; /* Blue */
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+}

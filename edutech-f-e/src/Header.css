@@ -1,0 +1,45 @@
+/* Header.css */
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background-color: #f5f5f5;
+}
+
+.header h1 {
+    font-size: 1.5em;
+    color: #333;
+}
+
+.header nav {
+    display: flex;
+}
+
+.header nav a {
+    margin-left: 20px;
+    text-decoration: none;
+    color: #333;
+}
+
+/* Add a hover effect to the links */
+.header nav a:hover {
+    color: #007BFF;
+}
+
+/* Style the active link (you can add a class "active" to the current link in your React component) */
+.header nav a.active {
+    color: #007BFF;
+}
+
+/* Apply different styles for larger screens */
+@media (min-width: 768px) {
+    .header {
+	padding: 40px;
+    }
+
+    .header h1 {
+	font-size: 2em;
+    }
+}

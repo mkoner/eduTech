@@ -1,0 +1,62 @@
+/* Learners.css */
+
+.learners {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+}
+
+.learners h1 {
+    font-size: 2em;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.learners nav ul {
+    display: flex;
+    list-style-type: none;
+    padding: 0;
+}
+
+.learners nav ul li {
+    margin-right: 10px;
+}
+
+.learners nav ul li a {
+    text-decoration: none;
+    color: #333;
+}
+
+.learners nav ul li a:hover {
+    color: #007BFF;
+}
+
+.learners-list {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.learners-list div {
+    margin-bottom: 20px;
+}
+
+.learners-list h2 {
+    font-size: 1.5em;
+}
+
+.learners-list p {
+    font-size: 1em;
+}
+
+/* Apply different styles for larger screens */
+@media (min-width: 768px) {
+    .learners, .learners-list {
+	padding: 40px;
+    }
+
+    .learners h1, .learners-list h2 {
+	font-size: 2.5em;
+    }
+}
