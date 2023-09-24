@@ -7,6 +7,7 @@ import Courses from './components/Courses';
 import HomePage from './components/HomePage';
 import Login from './components/Login';
 import AdminList from './pages/adminList/AdminList';
+import AdminLogin from './pages/adminLogin/AdminLogin';
 
 const App = () => {
     return (
@@ -25,6 +26,7 @@ const App = () => {
 		<Routes>
 		    <Route path="/" element={<HomePage />} />
 		    <Route path="/admins" element={<AdminList />} />
+			<Route path="/admins/login" element={<AdminLogin />} />
 		    <Route path="/login" element={<Login />} />
 		    <Route path="/learners/*" element={<Learners />} />
 		    <Route path="/course-materials" element={<CourseMaterials />} />
