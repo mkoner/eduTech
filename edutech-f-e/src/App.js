@@ -6,6 +6,7 @@ import CourseMaterials from './components/CourseMaterials';
 import Courses from './components/Courses';
 import HomePage from './components/HomePage';
 import Login from './components/Login';
+import AdminList from './pages/adminList/AdminList';
 
 const App = () => {
     return (
@@ -23,7 +24,7 @@ const App = () => {
 		</nav>
 		<Routes>
 		    <Route path="/" element={<HomePage />} />
-		    <Route path="/admins" element={<Admin />} />
+		    <Route path="/admins" element={<AdminList />} />
 		    <Route path="/login" element={<Login />} />
 		    <Route path="/learners/*" element={<Learners />} />
 		    <Route path="/course-materials" element={<CourseMaterials />} />
