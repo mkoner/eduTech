@@ -1,4 +1,3 @@
-// Login.js
 import React, { useState } from "react";
 import { useNavigate } from 'react-router-dom'
 import './AdminLogin.css';
@@ -24,7 +23,7 @@ const AdminLogin = () => {
 
   return (
     <div className="login-form">
-      <h1>Login</h1>
+      <h1>Admin Login</h1>
       <input
         type="text"
         placeholder="email"
