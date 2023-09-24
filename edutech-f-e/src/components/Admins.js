@@ -12,8 +12,8 @@ const Admin = () => {
 
     const getAdmins = async () => {
 	try {
-	    const response = await axios.get('/admins');
-	    setAdmins(response.data);
+	    const response = await axios.get('https://edutech-main.onrender.com/admins');
+	    setAdmins(response.data.data);
 	} catch (error) {
 	    console.error(`Error fetching admins: ${error}`);
 	}
@@ -24,7 +24,7 @@ const Admin = () => {
     };
 
     const handleUpdateAdmin = (updatedAdmin) => {
-	axios.put(`/admins/${updatedAdmin.id}`, updatedAdmin)
+	axios.put(`https://edutech-main.onrender.com/admins/${updatedAdmin.id}`, updatedAdmin)
 	    .then(response => {
 		setAdmins(admins.map(admin => admin.id === updatedAdmin.id ? updatedAdmin : admin));
 		setSelectedAdmin(null);
