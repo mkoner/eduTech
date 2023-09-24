@@ -8,6 +8,7 @@ import HomePage from './components/HomePage';
 import Login from './components/Login';
 import AdminList from './pages/adminList/AdminList';
 import AdminLogin from './pages/adminLogin/AdminLogin';
+import LearnerLogin from './pages/learnerLogin/LearnerLogin';
 
 const App = () => {
     return (
@@ -29,7 +30,8 @@ const App = () => {
 		    <Route path="/admins" element={<AdminList />} />
 			<Route path="/admins/login" element={<AdminLogin />} />
 		    <Route path="/login" element={<Login />} />
-		    <Route path="/learners/*" element={<Learners />} />
+		    <Route path="/learners" element={<Learners />} />
+			<Route path="/learners/login" element={<LearnerLogin />} />
 		    <Route path="/course-materials" element={<CourseMaterials />} />
 		    <Route path="/courses" element={<Courses />} />
 		</Routes>

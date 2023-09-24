@@ -14,8 +14,17 @@ export const adminLogin = async (data) => {
     }
     catch(err) {
         return err.message;
+    }   
+}
+
+export const learnerLogin = async (data) => {
+    try {
+        const response =  await axios.post(`${API_URL}learners/login`, data);
+        return response.data;
     }
-    
+    catch(err) {
+        return err.message;
+    }   
 }
 
 // Add other API calls (getLearners, getCourses, etc.) here
