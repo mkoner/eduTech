@@ -1,9 +1,17 @@
 import axios from 'axios';
 
 const API_URL = 'http://127.0.0.1:8000/'; // replace with your Django backend URL
+const token = localStorage.getItem("token") ? localStorage.getItem("token") : null;
 
-export const fetchAdmins = async () => {
-    const response = await axios.get(`${API_URL}admins`);
+export const fetchAdmins = async (filters) => {
+    const response = await axios.get(`${API_URL}admins`, {
+        headers: {
+          'Authorization': `Token ${token}`
+        },
+        params: filters
+      });
+    console.log(filters)
+    console.log(response)
     return response.data;
 };
 
