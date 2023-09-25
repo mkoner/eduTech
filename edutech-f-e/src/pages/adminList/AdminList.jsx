@@ -3,6 +3,8 @@ import axios from 'axios';
 import './AdminList.css';
 import { fetchAdmins } from '../../api';
 
+import UsersTable from '../../components/usersTable/usersTable';
+
 const AdminList = () => {
     const [admins, setAdmins] = useState([]);
 	const [filters, setFilters] = useState({
@@ -13,7 +15,7 @@ const AdminList = () => {
 		phoneNumber: null,
 		page: 1,
 	});
-	const {firstName, lastName, email, phoneNumber, page} = filters;
+	const {id, firstName, lastName, email, phoneNumber, page} = filters;
 
 	const handleChange = (evt) => {
 		const { name, value } = evt.target;
@@ -25,7 +27,7 @@ const AdminList = () => {
 
     useEffect(() => {
 	getAdmins()
-    }, []); 
+    }, [filters]); 
 
     const getAdmins = async () => {
         console.log('get admins called')
@@ -45,7 +47,7 @@ const AdminList = () => {
 	    {admins &&
 			    <table className="user-list">
 				<thead>
-				  <tr>
+				  <tr className="filter-row">
 					<th>Id</th>
 					<th>First Name</th>
 					<th>Last Name</th>
@@ -56,23 +58,14 @@ const AdminList = () => {
 				</thead>
 				<tbody>
 				<tr>
-					<td name="id" value={id} onChange={handleChange}></td>
-					<td name="firstName" value={firstName} onChange={handleChange}></td>
-					<td name="lastName" value={lastName} onChange={handleChange}></td>
-					<td name="email" value={email} onChange={handleChange}></td>
-					<td name="phoneNumber" value={phoneNumber} onChange={handleChange}></td>
+					<td><input type="text" name="id" value={id} onChange={handleChange}/></td>
+					<td><input type="text" name="firstName" value={firstName} onChange={handleChange}/></td>
+					<td><input type="text" name="lastName" value={lastName} onChange={handleChange}/></td>
+					<td><input type="text" name="email" value={email} onChange={handleChange}/></td>
+					<td><input type="text" name="phoneNumber" value={phoneNumber} onChange={handleChange}/></td>
 					<td></td>
-					</tr>
-				  {admins.data.map((user) => (
-					<tr key={user.id}>
-					  <td>{user.id}</td>
-					  <td>{user.first_name}</td>
-					  <td>{user.lastst_name}</td>
-					  <td>{user.email}</td>
-					  <td>{user.phone_number}</td>
-					  <td>{user.is_active}</td>
-					</tr>
-				  ))}
+				</tr>
+				<UsersTable users={admins}/>
 				</tbody>
 			  </table>
 		} 

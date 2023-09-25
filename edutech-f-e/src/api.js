@@ -10,8 +10,16 @@ export const fetchAdmins = async (filters) => {
         },
         params: filters
       });
-    console.log(filters)
-    console.log(response)
+    return response.data;
+};
+
+export const fetchLearners = async (filters) => {
+    const response = await axios.get(`${API_URL}learners`, {
+        headers: {
+          'Authorization': `Token ${token}`
+        },
+        params: filters
+      });
     return response.data;
 };
 
