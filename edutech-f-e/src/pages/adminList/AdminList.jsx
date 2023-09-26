@@ -30,7 +30,6 @@ const AdminList = () => {
     }, [filters]); 
 
     const getAdmins = async () => {
-        console.log('get admins called')
 	let result =  Object.entries(filters).reduce((a,[k,v]) => (v == null ? a : (a[k]=v, a)), {});
 	try {
 	    const response = await fetchAdmins(result);

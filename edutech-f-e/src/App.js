@@ -10,6 +10,7 @@ import AdminList from './pages/adminList/AdminList';
 import AdminLogin from './pages/adminLogin/AdminLogin';
 import LearnerLogin from './pages/learnerLogin/LearnerLogin';
 import LearnerList from './pages/learnerList/LearnerList';
+import CourseList from './pages/courseList/CourseList';
 
 const App = () => {
     return (
@@ -34,7 +35,7 @@ const App = () => {
 		    <Route path="/learners" element={<LearnerList />} />
 			<Route path="/learners/login" element={<LearnerLogin />} />
 		    <Route path="/course-materials" element={<CourseMaterials />} />
-		    <Route path="/courses" element={<Courses />} />
+		    <Route path="/courses" element={<CourseList />} />
 		</Routes>
 	    </div>
 	</Router>

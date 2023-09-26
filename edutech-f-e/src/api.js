@@ -23,6 +23,13 @@ export const fetchLearners = async (filters) => {
     return response.data;
 };
 
+export const fetchCourses = async (filters) => {
+    const response = await axios.get(`${API_URL}courses`, {
+        params: filters
+      });
+    return response.data;
+};
+
 export const adminLogin = async (data) => {
     try {
         const response =  await axios.post(`${API_URL}admins/login`, data);
