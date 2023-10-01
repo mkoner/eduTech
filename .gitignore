@@ -1,5 +1,6 @@
 # Django #
 *.log
+node_modules
 *.pot
 *.pyc
 __pycache__
