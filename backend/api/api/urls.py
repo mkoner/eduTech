@@ -17,7 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from .views.admin import admin_list, admin_detail, admin_login
-from .views.learner import create_learner, learner_details, learner_login, register_for_course
+from .views.learner import create_learner, learner_details, learner_login, register_for_course, get_learners_courses
 from .views.courses import course_list, course_detail, course_material_list, course_material_detail
 from .views.course_materials import create_course_material, get_course_material
 
@@ -27,6 +27,7 @@ urlpatterns = [
     path('admins/<int:id>', admin_detail),
     path('admins/login', admin_login),
     path('learners', create_learner),
+    path('learners/courses', get_learners_courses),
     path('learners/<int:lid>/register/<int:cid>', register_for_course),
     path('learners/<int:id>', learner_details),
     path('learners/login', learner_login),
