@@ -28,7 +28,7 @@ urlpatterns = [
     path('admins/login', admin_login),
     path('learners', create_learner),
     path('learners/courses', get_learners_courses),
-    path('learners/<int:lid>/register/<int:cid>', register_for_course),
+    path('learners/register/<int:cid>', register_for_course),
     path('learners/<int:id>', learner_details),
     path('learners/login', learner_login),
     path('courses', course_list),

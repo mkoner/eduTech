@@ -182,7 +182,7 @@ def learner_login(request):
     }, status=status.HTTP_401_UNAUTHORIZED)
 
 @api_view(['GET'])
-def register_for_course(request, lid, cid):
+def register_for_course(request, cid):
     """Register learner to a course"""
 
     user = get_user_from_request(request)
@@ -201,7 +201,7 @@ def register_for_course(request, lid, cid):
         return Response(response_data, status=status.HTTP_403_FORBIDDEN)
     
     try:
-        learner = Learner.objects.get(pk=lid)
+        learner = Learner.objects.get(pk=user.id)
     except Learner.DoesNotExist:
         response_data = {
             "Message": "User not found"
