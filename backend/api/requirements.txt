@@ -37,3 +37,4 @@ python-dotenv==1.0.0
 gunicorn==21.2.0
 pyJWT==2.3.0
 dj_database_url==2.1.0
+django-cors-headers==3.5.0
