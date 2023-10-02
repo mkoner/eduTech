@@ -11,6 +11,7 @@ from ..models.learner import Learner
 from ..models.admin import Admin
 from ..models.course import Course
 from ..serializers.learner import LearnerSerializer, LearnerUpdateSerializer
+from ..serializers.course import CourseSerializer
 from ..utils.jwt_utils import generate_token, get_user_from_request
 
 @api_view(['POST', 'GET'])
@@ -181,11 +182,26 @@ def learner_login(request):
     }, status=status.HTTP_401_UNAUTHORIZED)
 
 @api_view(['GET'])
-def register_for_course(request, lid, cid):
+def register_for_course(request, cid):
     """Register learner to a course"""
 
+    user = get_user_from_request(request)
+    # if token not passed or not valid
+    if not user:
+        response_data = {
+            "message": "Not authenticated",
+        }
+        return Response(response_data, status=status.HTTP_401_UNAUTHORIZED)
+    
+    # Only a learn can register for course
+    if not isinstance(user, Learner):
+        response_data = {
+            "message": "Not allowed",
+        }
+        return Response(response_data, status=status.HTTP_403_FORBIDDEN)
+    
     try:
-        learner = Learner.objects.get(pk=lid)
+        learner = Learner.objects.get(pk=user.id)
     except Learner.DoesNotExist:
         response_data = {
             "Message": "User not found"
@@ -206,3 +222,50 @@ def register_for_course(request, lid, cid):
         'message': 'Register successfully'
     }
     return Response(response)
+
+
+@api_view(['GET'])
+def get_learners_courses(request):
+    """Get courses of a learner"""
+
+    user = get_user_from_request(request)
+    # if token not passed or not valid
+    if not user:
+        response_data = {
+            "message": "Not authenticated",
+        }
+        return Response(response_data, status=status.HTTP_401_UNAUTHORIZED)
+    
+    # Only a learn can register for course
+    if not isinstance(user, Learner):
+        response_data = {
+            "message": "Not allowed",
+        }
+        return Response(response_data, status=status.HTTP_403_FORBIDDEN)
+    try:
+        learner = Learner.objects.get(pk=user.id)
+    except Learner.DoesNotExist:
+        response_data = {
+            "Message": "User not found"
+        }
+        return Response(response_data, status=status.HTTP_404_NOT_FOUND)
+    courses = learner.courses.all()
+    keyword = request.query_params.get('keyword', None)
+    course_id = request.query_params.get('id', None)
+
+    if keyword is not None:
+        courses = courses.filter(course_name__icontains=keyword) | courses.filter(description__icontains=keyword)
+    if course_id is not None:
+        courses = courses.filter(id=course_id)
+        
+    paginator = Paginator(courses, request.query_params.get('page_size', 10)) # Default page size is 10
+    page = paginator.get_page(request.query_params.get('page', 1)) # Default page is 1
+
+    serializer = CourseSerializer(page, many=True)
+    return Response({
+        'message': 'Courses fetched',
+        'count': paginator.count,
+        'page_size': paginator.per_page,
+        'page': page.number,
+        'data': serializer.data
+    }, status=status.HTTP_200_OK)
